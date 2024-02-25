@@ -1,0 +1,71 @@
+[gd_scene load_steps=9 format=3 uid="uid://b7abivsm1trjt"]
+
+[ext_resource type="PackedScene" uid="uid://hkqo00f05n5o" path="res://env/models/grass_1.glb" id="1_7q1qn"]
+[ext_resource type="Shader" path="res://env/sway_shader_leaves.gdshader" id="2_r5qet"]
+[ext_resource type="Texture2D" uid="uid://beg8to3qyknah" path="res://env/models/grass_1_grass_1.png" id="3_8gu4d"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ggssh"]
+frequency = 0.005
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c04tg"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_ggssh")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n77pf"]
+resource_name = "pine_needles"
+render_priority = 0
+shader = ExtResource("2_r5qet")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/alpha_scissor_threshold = 0.5
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.5
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = ExtResource("3_8gu4d")
+shader_parameter/wind_speed = 0.1
+shader_parameter/wind_strength = 0.2
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_c04tg")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ubxqe"]
+_surfaces = [{
+"aabb": AABB(-0.5, 0, -0.433013, 1, 1, 0.866025),
+"format": 34896613377,
+"index_count": 18,
+"index_data": PackedByteArray(0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 3, 0, 7, 0, 4, 0, 6, 0, 7, 0, 5, 0, 4, 0, 11, 0, 8, 0, 10, 0, 11, 0, 9, 0, 8, 0),
+"name": "foliage",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray(0, 0, 0, 0, 255, 127, 0, 0, 255, 255, 0, 0, 255, 127, 0, 0, 0, 0, 255, 255, 255, 127, 0, 0, 255, 255, 255, 255, 255, 127, 0, 0, 255, 63, 254, 255, 0, 0, 0, 0, 255, 191, 255, 255, 254, 255, 0, 0, 255, 63, 0, 0, 0, 0, 0, 0, 255, 191, 0, 0, 255, 255, 0, 0, 255, 63, 255, 255, 254, 255, 0, 0, 255, 191, 255, 255, 0, 0, 0, 0, 255, 63, 0, 0, 254, 255, 0, 0, 255, 191, 0, 0, 0, 0, 0, 0)
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_up75i"]
+resource_name = "grass_1_Plane"
+_surfaces = [{
+"aabb": AABB(-0.5, 0, -0.433013, 1, 1, 0.866025),
+"attribute_data": PackedByteArray(0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 255, 255),
+"format": 34896613399,
+"index_count": 18,
+"index_data": PackedByteArray(0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 3, 0, 7, 0, 4, 0, 6, 0, 7, 0, 5, 0, 4, 0, 11, 0, 8, 0, 10, 0, 11, 0, 9, 0, 8, 0),
+"material": SubResource("ShaderMaterial_n77pf"),
+"name": "foliage",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray(0, 0, 0, 0, 255, 127, 255, 127, 255, 255, 0, 0, 255, 127, 255, 127, 0, 0, 255, 255, 255, 127, 255, 127, 255, 255, 255, 255, 255, 127, 255, 127, 255, 63, 254, 255, 0, 0, 84, 213, 255, 191, 255, 255, 254, 255, 84, 213, 255, 63, 0, 0, 0, 0, 84, 213, 255, 191, 0, 0, 255, 255, 84, 213, 255, 63, 255, 255, 254, 255, 84, 213, 255, 191, 255, 255, 0, 0, 84, 213, 255, 63, 0, 0, 254, 255, 84, 213, 255, 191, 0, 0, 0, 0, 84, 213, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 0, 0, 255, 127, 0, 0, 255, 127, 0, 0, 255, 127, 0, 0, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255, 255, 127, 255, 255)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_ubxqe")
+
+[node name="grass_12" instance=ExtResource("1_7q1qn")]
+
+[node name="grass_1" parent="." index="0"]
+mesh = SubResource("ArrayMesh_up75i")

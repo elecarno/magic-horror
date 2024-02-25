@@ -1,0 +1,30 @@
+[gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://4ku0dxjk5koh"]
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_mkjsj"]
+resource_name = "Reverb"
+room_size = 0.1
+damping = 0.1
+dry = 0.8
+wet = 0.1
+
+[sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_m8lo4"]
+resource_name = "HighPassFilter"
+cutoff_hz = 300.0
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_hic3b"]
+resource_name = "LowPassFilter"
+cutoff_hz = 4000.0
+
+[resource]
+bus/1/name = &"Reverb"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectReverb_mkjsj")
+bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource("AudioEffectHighPassFilter_m8lo4")
+bus/1/effect/1/enabled = true
+bus/1/effect/2/effect = SubResource("AudioEffectLowPassFilter_hic3b")
+bus/1/effect/2/enabled = true
