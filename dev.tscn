@@ -1,6 +1,6 @@
-[gd_scene load_steps=33 format=3 uid="uid://7s4vqu4r4ya8"]
+[gd_scene load_steps=46 format=3 uid="uid://7s4vqu4r4ya8"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_xxbqv"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="1_xxbqv"]
 [ext_resource type="Script" path="res://scripts/player_sfx.gd" id="2_ae80s"]
 [ext_resource type="Texture2D" uid="uid://veb4boncx116" path="res://env/tex/forest_ground.png" id="2_u0w26"]
 [ext_resource type="AudioStream" uid="uid://cnj7p3mys5vr4" path="res://sound/footsteps/Footsteps_Leaves_Walk_01.wav" id="2_u8wpp"]
@@ -15,12 +15,29 @@
 [ext_resource type="AudioStream" uid="uid://dnobrac0eqpc2" path="res://sound/footsteps/Footsteps_Leaves_Walk_06.wav" id="8_g4bst"]
 [ext_resource type="AudioStream" uid="uid://2aeycev8w0cv" path="res://sound/jumping/Footsteps_Leaves_Jump_Start_01.wav" id="9_jky1x"]
 [ext_resource type="AudioStream" uid="uid://t5yetklg5nit" path="res://sound/ambience/Ambiance_Wind_Forest_Loop_Stereo.wav" id="9_llcg4"]
+[ext_resource type="AudioStream" uid="uid://dlonvt10hk5om" path="res://sound/footsteps/Footsteps_Leaves_Run_01.wav" id="9_tu1qr"]
 [ext_resource type="Script" path="res://scripts/audio_loop.gd" id="10_8xlbf"]
+[ext_resource type="AudioStream" uid="uid://dolpdp6yhcx7q" path="res://sound/footsteps/Footsteps_Leaves_Run_02.wav" id="10_esf8m"]
 [ext_resource type="AudioStream" uid="uid://b3lghvx5a64uh" path="res://sound/jumping/Footsteps_Leaves_Jump_Start_02.wav" id="10_tim8y"]
 [ext_resource type="AudioStream" uid="uid://dsakb5618fna" path="res://sound/jumping/Footsteps_Leaves_Jump_Land_01.wav" id="11_5sy6k"]
+[ext_resource type="AudioStream" uid="uid://gdof47ut7o36" path="res://sound/footsteps/Footsteps_Leaves_Run_03.wav" id="11_u5tuh"]
 [ext_resource type="AudioStream" uid="uid://ba4rbsjlg3d0x" path="res://sound/jumping/Footsteps_Leaves_Jump_Land_02.wav" id="12_rfygk"]
+[ext_resource type="AudioStream" uid="uid://rcyhd13udm2q" path="res://sound/footsteps/Footsteps_Leaves_Run_04.wav" id="12_vlggu"]
+[ext_resource type="AudioStream" uid="uid://bgc54gfr8do7c" path="res://sound/footsteps/Footsteps_Leaves_Run_05.wav" id="13_dy0s1"]
+[ext_resource type="AudioStream" uid="uid://cx3n17tpia1cp" path="res://sound/footsteps/Footsteps_Leaves_Run_06.wav" id="14_hs6wd"]
 [ext_resource type="AudioStream" uid="uid://bdc2gmb8foh3g" path="res://sound/ambience/Ambiance_Night_Loop_Stereo.wav" id="14_kd2dl"]
 [ext_resource type="AudioStream" uid="uid://cb87sgw4iol3v" path="res://sound/environment/Ambiance_Firecamp_Small_Loop_Mono.wav" id="16_ddq3j"]
+[ext_resource type="Script" path="res://scripts/damage_area.gd" id="26_lsbuq"]
+[ext_resource type="Script" path="res://scripts/player_hud.gd" id="28_e4ey4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bgima"]
+albedo_color = Color(0.552941, 0.552941, 0.552941, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ipxnk"]
+albedo_color = Color(0.188235, 0.572549, 0.733333, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ja7k8"]
+albedo_color = Color(0.815686, 0.305882, 0.380392, 1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7rkms"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -49,15 +66,6 @@ height = 1.8
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ushxy"]
 height = 1.8
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bgima"]
-albedo_color = Color(0.552941, 0.552941, 0.552941, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ipxnk"]
-albedo_color = Color(0.188235, 0.572549, 0.733333, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ja7k8"]
-albedo_color = Color(0.815686, 0.305882, 0.380392, 1)
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_txu83"]
 size = Vector2(100, 100)
 
@@ -72,91 +80,24 @@ texture_filter = 0
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_lr83v"]
 data = PackedVector3Array(50, 0, 50, -50, 0, 50, 50, 0, -50, -50, 0, 50, -50, 0, -50, 50, 0, -50)
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cvhay"]
+
+[sub_resource type="Gradient" id="Gradient_o8iqi"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3rghg"]
+gradient = SubResource("Gradient_o8iqi")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xl4ch"]
+gradient = SubResource("Gradient_o8iqi")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dmhwf"]
+gradient = SubResource("Gradient_o8iqi")
+width = 1
+
 [node name="map" type="Node3D"]
-
-[node name="sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.460165, -0.799218, 0.38665, -0.176038, 0.508986, 0.842582, -0.870206, 0.319661, -0.37491, 0, 4, 0)
-light_color = Color(0.34902, 0.321569, 0.321569, 1)
-light_energy = 0.5
-shadow_enabled = true
-
-[node name="env" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_lc2bm")
-
-[node name="player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.835253, 9.53674e-07, 4.13378)
-script = ExtResource("1_xxbqv")
-
-[node name="mesh" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("CapsuleMesh_vxm8p")
-
-[node name="col" type="CollisionShape3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-shape = SubResource("CapsuleShape3D_ushxy")
-
-[node name="head" type="Node3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-
-[node name="cam" type="Camera3D" parent="player/head"]
-
-[node name="sfx" type="Node3D" parent="player/head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.7, 0)
-script = ExtResource("2_ae80s")
-footsteps_forest_1 = [ExtResource("2_u8wpp"), ExtResource("4_8hyuf"), ExtResource("5_tdsoa")]
-footsteps_forest_2 = [ExtResource("6_48xmo"), ExtResource("7_bia1k"), ExtResource("8_g4bst")]
-jump_forest = [ExtResource("9_jky1x"), ExtResource("10_tim8y")]
-land_forest = [ExtResource("11_5sy6k"), ExtResource("12_rfygk")]
-
-[node name="footstep_1" type="AudioStreamPlayer3D" parent="player/head/sfx"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
-stream = ExtResource("2_u8wpp")
-volume_db = -12.0
-max_db = 1.0
-max_polyphony = 4
-panning_strength = 0.1
-bus = &"Reverb"
-
-[node name="footstep_2" type="AudioStreamPlayer3D" parent="player/head/sfx"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
-stream = ExtResource("2_u8wpp")
-volume_db = -12.0
-max_db = 1.0
-max_polyphony = 4
-panning_strength = 0.1
-bus = &"Reverb"
-
-[node name="jump" type="AudioStreamPlayer3D" parent="player/head/sfx"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
-stream = ExtResource("9_jky1x")
-volume_db = -2.0
-max_db = 1.0
-max_polyphony = 4
-panning_strength = 0.1
-bus = &"Reverb"
-
-[node name="land" type="AudioStreamPlayer3D" parent="player/head/sfx"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
-stream = ExtResource("11_5sy6k")
-volume_db = -2.0
-max_db = 1.0
-max_polyphony = 4
-panning_strength = 0.1
-bus = &"Reverb"
-
-[node name="coyote_time" type="Timer" parent="player"]
-wait_time = 0.5
-one_shot = true
-
-[node name="amb_forest" type="AudioStreamPlayer3D" parent="player"]
-stream = ExtResource("9_llcg4")
-attenuation_model = 3
-volume_db = -8.0
-unit_size = 100.0
-autoplay = true
-panning_strength = 0.0
-bus = &"Reverb"
-script = ExtResource("10_8xlbf")
 
 [node name="dev_env" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -17, 0)
@@ -211,6 +152,101 @@ material_override = SubResource("StandardMaterial3D_ja7k8")
 use_collision = true
 size = Vector3(2, 2, 2)
 
+[node name="sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.460165, -0.799218, 0.38665, -0.176038, 0.508986, 0.842582, -0.870206, 0.319661, -0.37491, 0, 4, 0)
+light_color = Color(0.34902, 0.321569, 0.321569, 1)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="env" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lc2bm")
+
+[node name="player" type="CharacterBody3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.835253, 9.53674e-07, 4.13378)
+script = ExtResource("1_xxbqv")
+
+[node name="mesh" type="MeshInstance3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_vxm8p")
+
+[node name="col" type="CollisionShape3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_ushxy")
+
+[node name="head" type="Node3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="cam" type="Camera3D" parent="player/head"]
+
+[node name="sfx" type="Node3D" parent="player/head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.7, 0)
+script = ExtResource("2_ae80s")
+footsteps_forest_1 = [ExtResource("2_u8wpp"), ExtResource("4_8hyuf"), ExtResource("5_tdsoa")]
+footsteps_forest_2 = [ExtResource("6_48xmo"), ExtResource("7_bia1k"), ExtResource("8_g4bst")]
+footsteps_sprint_forest_1 = [ExtResource("9_tu1qr"), ExtResource("10_esf8m"), ExtResource("11_u5tuh")]
+footsteps_sprint_forest_2 = [ExtResource("12_vlggu"), ExtResource("13_dy0s1"), ExtResource("14_hs6wd")]
+jump_forest = [ExtResource("9_jky1x"), ExtResource("10_tim8y")]
+land_forest = [ExtResource("11_5sy6k"), ExtResource("12_rfygk")]
+
+[node name="footstep_1" type="AudioStreamPlayer3D" parent="player/head/sfx"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+stream = ExtResource("2_u8wpp")
+volume_db = -12.0
+max_db = 1.0
+max_polyphony = 4
+panning_strength = 0.1
+bus = &"Reverb"
+
+[node name="footstep_2" type="AudioStreamPlayer3D" parent="player/head/sfx"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+stream = ExtResource("2_u8wpp")
+volume_db = -12.0
+max_db = 1.0
+max_polyphony = 4
+panning_strength = 0.1
+bus = &"Reverb"
+
+[node name="jump" type="AudioStreamPlayer3D" parent="player/head/sfx"]
+stream = ExtResource("9_jky1x")
+volume_db = 12.0
+max_db = 1.0
+max_polyphony = 4
+panning_strength = 0.1
+bus = &"Reverb"
+
+[node name="land" type="AudioStreamPlayer3D" parent="player/head/sfx"]
+stream = ExtResource("11_5sy6k")
+volume_db = 12.0
+max_db = 1.0
+max_polyphony = 4
+panning_strength = 0.1
+bus = &"Reverb"
+
+[node name="coyote_time" type="Timer" parent="player"]
+wait_time = 0.5
+one_shot = true
+
+[node name="sprint_cooldown" type="Timer" parent="player"]
+wait_time = 2.0
+one_shot = true
+
+[node name="amb_forest" type="AudioStreamPlayer3D" parent="player"]
+stream = ExtResource("9_llcg4")
+attenuation_model = 3
+volume_db = -8.0
+unit_size = 100.0
+autoplay = true
+panning_strength = 0.0
+bus = &"Reverb"
+script = ExtResource("10_8xlbf")
+
+[node name="amb_night" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("14_kd2dl")
+autoplay = true
+panning_strength = 0.0
+bus = &"Reverb"
+script = ExtResource("10_8xlbf")
+
 [node name="ground" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_txu83")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
@@ -220,85 +256,118 @@ surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 [node name="col" type="CollisionShape3D" parent="ground/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground3" type="MeshInstance3D" parent="."]
+[node name="ground3" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground3"]
+[node name="static" type="StaticBody3D" parent="ground/ground3"]
 
-[node name="col" type="CollisionShape3D" parent="ground3/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground3/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground2" type="MeshInstance3D" parent="."]
+[node name="ground2" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 0)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground2"]
+[node name="static" type="StaticBody3D" parent="ground/ground2"]
 
-[node name="col" type="CollisionShape3D" parent="ground2/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground2/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground4" type="MeshInstance3D" parent="."]
+[node name="ground4" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground4"]
+[node name="static" type="StaticBody3D" parent="ground/ground4"]
 
-[node name="col" type="CollisionShape3D" parent="ground4/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground4/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground5" type="MeshInstance3D" parent="."]
+[node name="ground5" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 100)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground5"]
+[node name="static" type="StaticBody3D" parent="ground/ground5"]
 
-[node name="col" type="CollisionShape3D" parent="ground5/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground5/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground6" type="MeshInstance3D" parent="."]
+[node name="ground6" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 100)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground6"]
+[node name="static" type="StaticBody3D" parent="ground/ground6"]
 
-[node name="col" type="CollisionShape3D" parent="ground6/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground6/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground7" type="MeshInstance3D" parent="."]
+[node name="ground7" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -100)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground7"]
+[node name="static" type="StaticBody3D" parent="ground/ground7"]
 
-[node name="col" type="CollisionShape3D" parent="ground7/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground7/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground8" type="MeshInstance3D" parent="."]
+[node name="ground8" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, -100)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground8"]
+[node name="static" type="StaticBody3D" parent="ground/ground8"]
 
-[node name="col" type="CollisionShape3D" parent="ground8/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground8/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
 
-[node name="ground9" type="MeshInstance3D" parent="."]
+[node name="ground9" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, -100)
 mesh = SubResource("PlaneMesh_txu83")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_me6in")
 
-[node name="static" type="StaticBody3D" parent="ground9"]
+[node name="static" type="StaticBody3D" parent="ground/ground9"]
 
-[node name="col" type="CollisionShape3D" parent="ground9/static"]
+[node name="col" type="CollisionShape3D" parent="ground/ground9/static"]
 shape = SubResource("ConcavePolygonShape3D_lr83v")
+
+[node name="campfire" parent="." instance=ExtResource("6_4rovt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.042583, 0)
+
+[node name="light" type="OmniLight3D" parent="campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.543417, 0)
+light_color = Color(0.780392, 0.388235, 0.266667, 1)
+light_energy = 2.85
+omni_range = 3.0
+omni_attenuation = 1.30625
+
+[node name="sfx" type="AudioStreamPlayer3D" parent="campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.042583, 0)
+stream = ExtResource("16_ddq3j")
+volume_db = -6.0
+autoplay = true
+bus = &"Reverb"
+script = ExtResource("10_8xlbf")
+
+[node name="damage_area" type="Area3D" parent="campfire"]
+script = ExtResource("26_lsbuq")
+
+[node name="col" type="CollisionShape3D" parent="campfire/damage_area"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.8, 0)
+shape = SubResource("CylinderShape3D_cvhay")
 
 [node name="trees" type="GridMap" parent="."]
 mesh_library = ExtResource("4_d7mqc")
@@ -317,32 +386,90 @@ data = {
 "cells": PackedInt32Array(65527, 65535, 0, 65527, 65534, 0, 65528, 65533, 0, 65529, 65533, 0, 65529, 65532, 0, 65529, 65531, 0, 65529, 65530, 0, 65530, 65530, 0, 65531, 65530, 0, 65533, 65530, 0, 65532, 65530, 0, 65532, 65529, 0, 65531, 65529, 0, 65532, 65531, 0, 65531, 65531, 0, 65530, 65531, 0, 65529, 5, 0, 65530, 5, 0, 65530, 6, 0, 65531, 6, 0, 65532, 7, 0, 65533, 7, 0, 65533, 8, 0, 65533, 9, 0, 65534, 9, 0, 65535, 9, 0, 0, 9, 0, 1, 9, 0, 1, 8, 0, 0, 8, 0, 65535, 8, 0, 65534, 8, 0, 65534, 7, 0, 65533, 6, 0, 65532, 6, 0, 65531, 5, 0, 3, 8, 0, 4, 8, 0, 5, 8, 0, 5, 7, 0, 6, 7, 0, 6, 6, 0, 7, 6, 0, 7, 5, 0, 8, 5, 0, 8, 4, 0, 3, 65528, 0, 3, 65529, 0, 4, 65529, 0, 5, 65529, 0, 6, 65529, 0, 6, 65530, 0, 7, 65530, 0, 9, 65532, 0, 10, 65532, 0, 9, 65533, 0, 7, 65531, 0, 5, 65530, 0, 4, 65530, 0, 65534, 65527, 0, 65535, 65527, 0, 0, 65527, 0, 0, 65526, 0, 1, 65525, 0, 1, 65524, 0, 1, 65526, 0, 1, 65527, 0, 65534, 65528, 0, 65535, 65528, 0, 6, 65527, 0, 7, 65528, 0, 8, 65528, 0, 9, 65528, 0, 9, 65529, 0, 10, 65529, 0, 10, 3, 0, 10, 4, 0, 9, 4, 0, 9, 5, 0, 9, 6, 0, 8, 6, 0, 16, 14, 0, 16, 15, 0, 15, 15, 0, 14, 16, 0, 7, 20, 0, 6, 20, 0, 5, 20, 0, 4, 20, 0, 3, 20, 0, 2, 20, 0, 1, 20, 0, 0, 19, 0, 65535, 19, 0, 65534, 19, 0, 65532, 19, 0, 65531, 19, 0, 65531, 18, 0, 65526, 17, 0, 65525, 17, 0, 65517, 9, 0, 65516, 9, 0, 65516, 8, 0, 65514, 5, 0, 65514, 4, 0, 65514, 3, 0, 65512, 0, 0, 65511, 65535, 0, 65510, 65534, 0, 65509, 65533, 0, 65509, 65531, 0, 65509, 65530, 0, 65508, 65529, 0, 65508, 65528, 0, 65508, 65527, 0, 65509, 65527, 0, 65509, 65526, 0, 65509, 65522, 0, 65509, 65521, 0, 65509, 65520, 0, 65509, 65519, 0, 65510, 65519, 0, 65513, 65517, 0, 65512, 65518, 0, 65511, 65518, 0, 65508, 65520, 0, 65507, 65521, 0, 65507, 65522, 0, 65507, 65523, 0, 65507, 65524, 0, 65507, 65525, 0, 65506, 65526, 0, 65504, 65527, 0, 65503, 65528, 0, 65503, 65529, 0, 65504, 65530, 0, 65504, 65531, 0, 65505, 65530, 0, 65506, 65528, 0, 65507, 65526, 0, 65508, 65525, 0, 65508, 65524, 0, 65508, 65523, 0, 65515, 65514, 0, 65516, 65514, 0, 65517, 65513, 0, 65519, 65512, 0, 65520, 65512, 0, 65522, 65511, 0, 65525, 65509, 0, 65526, 65508, 0, 65528, 65507, 0, 65530, 65507, 0, 65531, 65507, 0, 65532, 65507, 0, 65533, 65506, 0, 65535, 65506, 0, 0, 65507, 0, 1, 65507, 0, 3, 65508, 0, 4, 65508, 0, 5, 65509, 0, 7, 65510, 0, 8, 65510, 0, 9, 65510, 0, 10, 65511, 0, 11, 65511, 0, 14, 65514, 0, 15, 65514, 0, 15, 65515, 0, 63, 34, 0, 62, 34, 0, 62, 33, 0, 62, 32, 0, 62, 31, 0, 62, 30, 0, 63, 28, 0, 63, 27, 0, 63, 26, 0, 63, 24, 0, 62, 23, 0, 62, 22, 0, 60, 20, 0, 61, 19, 0, 60, 18, 0, 59, 17, 0, 59, 16, 0, 58, 15, 0, 58, 14, 0, 57, 14, 0, 56, 13, 0, 56, 12, 0, 55, 12, 0, 55, 11, 0, 54, 11, 0, 53, 10, 0, 53, 9, 0, 52, 9, 0, 52, 8, 0, 51, 8, 0, 51, 7, 0, 50, 6, 0, 50, 5, 0, 49, 5, 0, 49, 4, 0, 48, 4, 0, 48, 3, 0, 45, 2, 0, 44, 2, 0, 42, 2, 0, 42, 1, 0, 41, 1, 0, 38, 1, 0, 42, 65528, 0, 43, 65528, 0, 43, 65529, 0, 44, 65529, 0, 45, 65528, 0, 46, 65528, 0, 47, 65528, 0, 49, 65529, 0, 49, 65530, 0, 50, 65530, 0, 51, 65530, 0, 53, 65531, 0, 54, 65531, 0, 55, 65531, 0, 55, 65532, 0, 55, 65533, 0, 56, 65534, 0, 57, 65534, 0, 58, 65534, 0, 59, 65535, 0, 59, 1, 0, 59, 2, 0, 59, 3, 0, 60, 3, 0, 62, 4, 0, 62, 5, 0, 62, 6, 0, 63, 7, 0, 64, 7, 0, 65, 7, 0, 65, 9, 0, 65, 10, 0, 66, 11, 0, 66, 12, 0, 67, 13, 0, 67, 14, 0, 67, 15, 0, 67, 17, 0, 67, 18, 0, 67, 20, 0, 67, 21, 0, 67, 22, 0, 67, 23, 0, 68, 23, 0, 68, 24, 0, 69, 25, 0, 69, 26, 0, 68, 26, 0, 68, 27, 0, 70, 30, 0, 70, 31, 0, 70, 32, 0, 69, 32, 0, 69, 33, 0, 69, 36, 0, 69, 37, 0, 69, 38, 0, 41, 65531, 0, 42, 65531, 0, 43, 65531, 0, 44, 65531, 0, 44, 65530, 0, 45, 65531, 0, 46, 65531, 0, 47, 65532, 0, 36, 65535, 0, 37, 65535, 0, 38, 65535, 0, 39, 0, 0, 40, 1, 0, 41, 2, 0, 23, 3, 0, 23, 2, 0, 24, 1, 0, 25, 0, 0, 26, 1, 0, 27, 1, 0, 29, 1, 0, 30, 0, 0, 31, 0, 0, 21, 65529, 0, 22, 65528, 0, 23, 65527, 0, 24, 65527, 0, 25, 65528, 0, 26, 65528, 0, 27, 65528, 0, 28, 65527, 0, 29, 65527, 0, 30, 65526, 0, 32, 65526, 0, 33, 65526, 0, 34, 65526, 0, 34, 65527, 0, 25, 65530, 0, 25, 65529, 0, 26, 65529, 0, 27, 65530, 0, 28, 65530, 0, 29, 65530, 0, 30, 65530, 0, 31, 65529, 0, 32, 65529, 0, 32, 65530, 0, 11, 2, 0, 12, 2, 0, 13, 2, 0, 14, 1, 0, 15, 2, 0, 16, 2, 0, 17, 2, 0, 18, 1, 0, 19, 1, 0, 26, 3, 0, 26, 4, 0, 27, 4, 0, 27, 5, 0, 29, 12, 0, 28, 11, 0, 25, 10, 0, 23, 10, 0, 21, 10, 0, 20, 11, 0, 19, 11, 0, 20, 12, 0, 18, 17, 0, 17, 17, 0, 16, 17, 0, 15, 17, 0, 14, 17, 0, 13, 17, 0, 11, 20, 0, 12, 21, 0, 13, 21, 0, 15, 22, 0, 16, 22, 0, 22, 25, 0, 22, 26, 0, 21, 27, 0, 11, 32, 0, 14, 33, 0, 17, 33, 0, 19, 34, 0, 24, 27, 0, 25, 27, 0, 25, 26, 0, 27, 27, 0, 29, 27, 0, 31, 28, 0, 34, 28, 0, 35, 28, 0, 35, 27, 0, 36, 27, 0, 36, 26, 0, 42, 25, 0, 42, 24, 0, 42, 22, 0, 42, 21, 0, 41, 20, 0, 40, 19, 0, 40, 18, 0, 38, 17, 0, 37, 17, 0, 39, 16, 0, 40, 16, 0, 41, 16, 0, 43, 17, 0, 44, 18, 0, 38, 25, 0, 35, 25, 0, 32, 25, 0, 31, 25, 0, 30, 25, 0, 31, 27, 0, 32, 28, 0, 34, 30, 0, 37, 31, 0, 38, 31, 0, 38, 32, 0, 38, 33, 0, 40, 37, 0, 46, 36, 0, 47, 36, 0, 48, 36, 0, 49, 37, 0, 48, 38, 0, 46, 39, 0, 42, 40, 0, 38, 40, 0, 36, 41, 0, 35, 40, 0, 33, 40, 0, 31, 38, 0, 24, 32, 0, 22, 33, 0, 20, 34, 0, 18, 36, 0, 17, 37, 0, 16, 38, 0, 6, 36, 0, 6, 35, 0, 6, 34, 0, 6, 33, 0, 65533, 35, 0, 65531, 35, 0, 65532, 35, 0, 65526, 39, 0, 65526, 38, 0, 65526, 36, 0, 65526, 35, 0, 65526, 34, 0, 65525, 32, 0, 65525, 31, 0, 65525, 30, 0, 65524, 31, 0, 65523, 29, 0, 65523, 28, 0, 65523, 27, 0, 65524, 26, 0, 65523, 25, 0, 65522, 25, 0, 65521, 24, 0, 65520, 23, 0, 65511, 20, 0, 65509, 18, 0, 65507, 16, 0, 65505, 14, 0, 65504, 13, 0, 65503, 11, 0, 65502, 8, 0, 65503, 7, 0, 65506, 6, 0, 65508, 5, 0, 65510, 5, 0, 65507, 0, 0, 65506, 0, 0, 65504, 65534, 0, 65507, 65529, 0, 65510, 65528, 0, 65511, 65528, 0, 65511, 65527, 0, 65510, 65526, 0, 65501, 65522, 0, 65502, 65521, 0, 65503, 65520, 0, 65504, 65519, 0, 65505, 65519, 0, 65511, 65522, 0, 65511, 65521, 0, 65517, 65511, 0, 65518, 65510, 0, 65518, 65511, 0, 65522, 65513, 0, 65525, 65513, 0, 65529, 65510, 0, 65530, 65509, 0, 65531, 65508, 0, 65532, 65506, 0, 65533, 65505, 0, 2, 65509, 0, 4, 65511, 0, 5, 65512, 0, 15, 65506, 0, 16, 65506, 0, 17, 65505, 0, 18, 65504, 0, 19, 65505, 0, 20, 65506, 0, 21, 65508, 0, 23, 65509, 0, 24, 65510, 0, 25, 65511, 0, 26, 65512, 0, 27, 65513, 0, 29, 65513, 0, 30, 65514, 0, 26, 65509, 0, 23, 65507, 0, 19, 65506, 0, 14, 65505, 0, 11, 65505, 0, 9, 65506, 0, 14, 65509, 0, 18, 65510, 0, 21, 65511, 0, 22, 65512, 0, 21, 65513, 0, 21, 65514, 0, 21, 65515, 0, 27, 65508, 0, 28, 65508, 0, 28, 65509, 0, 29, 65510, 0, 30, 65512, 0, 31, 65514, 0, 33, 65516, 0, 34, 65517, 0, 42, 65512, 0, 43, 65511, 0, 45, 65510, 0, 46, 65509, 0, 46, 65508, 0, 47, 65508, 0, 48, 65512, 0, 33, 65503, 0, 31, 65502, 0, 24, 65500, 0, 20, 65500, 0, 17, 65501, 0, 16, 65502, 0, 15, 65503, 0, 14, 65504, 0, 2, 65506, 0, 65535, 65504, 0, 65532, 65503, 0, 65532, 65502, 0, 65533, 65501, 0, 65534, 65500, 0, 2, 65502, 0, 3, 65505, 0, 4, 65507, 0, 65534, 65509, 0, 65518, 65508, 0, 65519, 65509, 0, 65525, 65515, 0, 65522, 65517, 0, 65518, 65517, 0, 65515, 65517, 0, 65514, 65517, 0, 65513, 65515, 0, 65515, 65509, 0, 65523, 65506, 0, 65527, 65506, 0, 3, 65507, 0, 8, 65509, 0, 9, 65509, 0, 25, 65508, 0, 28, 65506, 0, 29, 65505, 0, 29, 65506, 0, 29, 65508, 0, 30, 65510, 0, 32, 65513, 0, 33, 65515, 0, 34, 65515, 0, 35, 65514, 0, 35, 65513, 0, 26, 65507, 0, 25, 65507, 0, 25, 65506, 0, 26, 65505, 0, 28, 65504, 0, 29, 65504, 0, 56, 65513, 0, 58, 65514, 0, 58, 65515, 0, 58, 65516, 0, 58, 65517, 0, 50, 65519, 0, 50, 65520, 0, 49, 65518, 0, 44, 65512, 0, 43, 65512, 0, 43, 65514, 0, 43, 65515, 0, 45, 65517, 0, 46, 65517, 0, 56, 65520, 0, 59, 65521, 0, 59, 65522, 0, 58, 65523, 0, 57, 65526, 0, 58, 65527, 0, 60, 65527, 0, 64, 65527, 0, 68, 65526, 0, 69, 65525, 0, 71, 65525, 0, 71, 65526, 0, 72, 65527, 0, 72, 65528, 0, 75, 65531, 0, 74, 65532, 0, 74, 65533, 0, 71, 65533, 0, 70, 65533, 0, 69, 65533, 0, 72, 0, 0, 72, 1, 0, 73, 2, 0, 73, 3, 0, 74, 4, 0, 75, 4, 0)
 }
 
-[node name="amb_night" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("14_kd2dl")
-autoplay = true
-panning_strength = 0.0
-bus = &"Reverb"
-script = ExtResource("10_8xlbf")
+[node name="ui" type="CanvasLayer" parent="."]
 
-[node name="campfire" parent="." instance=ExtResource("6_4rovt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.042583, 0)
+[node name="hud" type="Control" parent="ui"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("28_e4ey4")
 
-[node name="light" type="OmniLight3D" parent="campfire"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.543417, 0)
-light_color = Color(0.780392, 0.388235, 0.266667, 1)
-light_energy = 2.85
-omni_range = 3.0
-omni_attenuation = 1.30625
+[node name="status" type="Control" parent="ui/hud"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = -66.0
+offset_right = 135.0
+offset_bottom = -7.0
+grow_vertical = 0
+mouse_filter = 1
 
-[node name="sfx" type="AudioStreamPlayer3D" parent="campfire"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.042583, 0)
-stream = ExtResource("16_ddq3j")
-volume_db = -10.0
-autoplay = true
-bus = &"Reverb"
-script = ExtResource("10_8xlbf")
+[node name="hp_bar" type="HSlider" parent="ui/hud/status"]
+self_modulate = Color(0.811765, 0, 0.14902, 1)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -22.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/center_grabber = 0
+theme_override_icons/grabber = SubResource("GradientTexture1D_3rghg")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture1D_xl4ch")
+theme_override_icons/grabber_disabled = SubResource("GradientTexture1D_dmhwf")
+value = 50.0
+editable = false
+scrollable = false
+
+[node name="stamina_bar" type="HSlider" parent="ui/hud/status"]
+self_modulate = Color(0.172549, 0.74902, 0.909804, 1)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -33.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/center_grabber = 0
+theme_override_icons/grabber = SubResource("GradientTexture1D_3rghg")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture1D_xl4ch")
+theme_override_icons/grabber_disabled = SubResource("GradientTexture1D_dmhwf")
+value = 50.0
+editable = false
+scrollable = false
+
+[node name="mana_bar" type="HSlider" parent="ui/hud/status"]
+self_modulate = Color(0.431373, 0.203922, 1, 1)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -11.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/center_grabber = 0
+theme_override_icons/grabber = SubResource("GradientTexture1D_3rghg")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture1D_xl4ch")
+theme_override_icons/grabber_disabled = SubResource("GradientTexture1D_dmhwf")
+value = 50.0
+editable = false
+scrollable = false
 
 [connection signal="timeout" from="player/coyote_time" to="player" method="_on_coyote_time_timeout"]
+[connection signal="timeout" from="player/sprint_cooldown" to="player" method="_on_sprint_cooldown_timeout"]
 [connection signal="finished" from="player/amb_forest" to="player/amb_forest" method="_on_finished"]
 [connection signal="finished" from="amb_night" to="amb_night" method="_on_finished"]
 [connection signal="finished" from="campfire/sfx" to="campfire/sfx" method="_on_finished"]
+[connection signal="body_entered" from="campfire/damage_area" to="campfire/damage_area" method="_on_body_entered"]
