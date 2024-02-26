@@ -60,6 +60,7 @@ func _physics_process(delta):
 	# handle jump.
 	if Input.is_action_just_pressed("mov_jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		sfx.play_sfx(2)
 		
 	# handle crouch
 	if Input.is_action_pressed("mov_crouch"):
@@ -107,7 +108,11 @@ func _physics_process(delta):
 	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
 	cam.fov = lerp(cam.fov, target_fov, delta * 8.0)
 
+	var was_on_floor = is_on_floor()
 	move_and_slide()
+	
+	if is_on_floor() and not was_on_floor:
+		sfx.play_sfx(3)
 	
 func _headbob(time: float) -> Vector3:
 	var pos: Vector3 = Vector3.ZERO

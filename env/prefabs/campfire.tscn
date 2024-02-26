@@ -111,7 +111,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.269229, 0)
 amount = 16
 preprocess = 5.0
 speed_scale = 2.0
-trail_lifetime = 0.01
 process_material = SubResource("ParticleProcessMaterial_aepay")
 draw_pass_1 = SubResource("QuadMesh_fbcal")
 
@@ -121,6 +120,5 @@ amount = 32
 lifetime = 5.0
 preprocess = 15.0
 speed_scale = 0.6
-trail_lifetime = 0.01
 process_material = SubResource("ParticleProcessMaterial_h1lgt")
 draw_pass_1 = SubResource("QuadMesh_3rv23")
